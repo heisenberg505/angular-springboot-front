@@ -1,15 +1,11 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Generic } from '../models/generic';
 
-@Injectable({
-  providedIn: 'root'
-})
 export abstract class CommonService<E extends Generic> {
 
   protected http: HttpClient;
-  protected baseEndPoint = 'http://localhost:8090/api/alumnos';
+  protected baseEndPoint = 'http://localhost:8090/api/';
   protected cabeceras: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(http: HttpClient) { this.http = http; }
