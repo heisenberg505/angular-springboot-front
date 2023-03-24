@@ -17,6 +17,7 @@ export abstract class CommonFormComponent<E extends Generic, S extends CommonSer
   }
 
   ngOnInit() {
+    //si fue enviado como parametro un model.id en un routerLink desde un boton. Cambio el this.tiitulo
     this.route.paramMap.subscribe(params =>{
       const id: number = +params.get('id');
       if(id){

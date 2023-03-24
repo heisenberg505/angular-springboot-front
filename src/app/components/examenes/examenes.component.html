@@ -1,1 +1,47 @@
-<p>examenes works!</p>
+<div class="card-header">{{titulo}}</div>
+<div class="card-body" style="overflow-x:auto;">
+    <button class="btn btn-primary my-2" routerLink="/examenes/form">Crear</button>
+    <div *ngIf="!lista">
+        <div class="spinner-border m-5" role="status">
+            <span class="sr-only"></span>
+        </div> 
+    </div> 
+    <div class="alert alert-info" *ngIf="lista?.length==0">
+        No hay examenes en la Base de Datos.
+    </div>
+    <table class="table table-hover table-striped" *ngIf="lista?.length>0">
+        <thead>
+            <tr>
+                <th>id</th>               
+                <th>nombre</th>
+                <th>Asignaturas</th>
+                <th>Preguntas</th>
+                <th>creado en</th>   
+                <th>editar</th>
+                <th>eliminar</th>           
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let examen of lista">
+                <td>{{examen.id}}</td>
+                <td>{{examen.nombre}}</td>
+                <td>{{examen.asignaturaPadre?.nombre}} -> {{examen.asignaturaHijo?.nombre}}</td>
+                <td>{{examen.preguntas.length}}</td>
+                <td>{{examen.createAt | date: 'yyyy/MM/dd h:mm:ss a'}}</td>
+                <td>
+                    <button class="btn btn-secondary btn-sm" [routerLink]="['/examenes/form', examen.id]">
+                        Editar
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-sm" (click)="eliminar(examen)">
+                        Eliminar
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <mat-paginator [length]="totalRegistros" [pageSize]="totalPorPagina" [pageIndex]="paginaActual"
+        [pageSizeOptions]="pageSizeOptions" (page)="paginar($event)" showFirstLastButtons class="float-left mx-2">
+    </mat-paginator>
+</div>

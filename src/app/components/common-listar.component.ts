@@ -7,7 +7,7 @@ import { CommonService } from '../services/common.service';
 export abstract class CommonListarComponent<E extends Generic, S extends CommonService<E>> 
 implements OnInit {
   
-  //sin modificador de acceso por default es publid
+  //sin modificador de acceso por default es public
   titulo : string;
   lista : E[];
   protected nombreModel: string;
@@ -17,7 +17,7 @@ implements OnInit {
   totalPorPagina= 4;
   pageSizeOptions: number[]= [5, 10, 25, 100];
 
-  //injectar el pomponente hijo, para customizarlo
+  //injectar el componente hijo del front, para customizarlo
   @ViewChild(MatPaginator) paginator:MatPaginator;
 
   constructor(protected service: S) { }

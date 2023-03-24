@@ -1,11 +1,12 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { BASE_ENDPOINT } from '../config/app';
 import { Generic } from '../models/generic';
 
 export abstract class CommonService<E extends Generic> {
 
   protected http: HttpClient;
-  protected baseEndPoint = 'http://localhost:8090/api/';
+  protected baseEndPoint = BASE_ENDPOINT;
   protected cabeceras: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(http: HttpClient) { this.http = http; }
@@ -22,6 +23,7 @@ export abstract class CommonService<E extends Generic> {
   }
 
   public ver(id: number): Observable<E>{
+    console.log('commons ver->'+this.baseEndPoint);
     return this.http.get<E>(`${this.baseEndPoint}/${id}`);
   }
 

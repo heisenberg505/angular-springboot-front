@@ -1,0 +1,88 @@
+<mat-card>
+    <mat-card-header *ngIf="curso">
+        <mat-card-title>Examenes del curso: {{curso.nombre}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+        <mat-tab-group dynamicHeight [(selectedIndex)]="tabIndex">
+            <mat-tab label="Asignar Examenes">
+
+                <mat-form-field>
+                    <input matInput placeholder="Agregar examen" [formControl]="autocompleteControl"
+                        [matAutocomplete]="autocomplete">
+                    <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="mostrarNombre"
+                        (optionSelected)="seleccionarExamen($event)">
+                        <mat-option *ngFor="let examen of examenesFiltrados" [value]="examen">
+                            {{examen.nombre}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+                <div class="scroll-alumno-tabs">
+                    <table mat-table [dataSource]="examenesAsignar" class="mat-elevation-z8 mx-3">
+
+                        <ng-container matColumnDef="nombre">
+                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                            <td mat-cell *matCellDef="let examen"> {{examen.nombre}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="asignatura">
+                            <th mat-header-cell *matHeaderCellDef> Asignatura </th>
+                            <td mat-cell *matCellDef="let examen"> {{examen.asignaturaHijo.nombre}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="eliminar">
+                            <th mat-header-cell *matHeaderCellDef> Asignatura </th>
+                            <td mat-cell *matCellDef="let examen">
+                                <button mat-mini-fab color="warn" (click)="eliminarDeAsignacion(examen)">X
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let examen; columns: displayedColumns;">
+                        </tr>
+                    </table>
+                    <button mat-raised-button color="primary" class="m-4" (click)="asignar()"
+                        [disabled]="examenesAsignar.length===0">
+                        Asignar
+                    </button>
+                </div>
+            </mat-tab>
+            <mat-tab label="Examenes del curso">
+                <div class="scroll-alumno-tabs">
+                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 m-3">
+
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef> Id </th>
+                            <td mat-cell *matCellDef="let examen"> {{examen.id}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nombre">
+                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                            <td mat-cell *matCellDef="let examen"> {{examen.nombre}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="asignaturas">
+                            <th mat-header-cell *matHeaderCellDef> Asignaturas </th>
+                            <td mat-cell *matCellDef="let examen"> {{examen.asignaturaPadre.nombre}} -> {{examen.asignaturaHijo.nombre}} </td>
+                        </ng-container>
+                 
+                        <ng-container matColumnDef="eliminar">
+                            <th mat-header-cell *matHeaderCellDef> Examen </th>
+                            <td mat-cell *matCellDef="let examen">
+                                <button mat-mini-fab color="warn" (click)="eliminarExamenDelCurso(examen)">X
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedExamenesColumns"></tr>
+                        <tr mat-row *matRowDef="let examen; columns: displayedExamenesColumns;"></tr>
+                    </table>
+                    <mat-paginator
+                        [pageSizeOptions]="pageSizeOptions" showFirstLastButtons class="float-left mx-2">
+                    </mat-paginator>                  
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>
