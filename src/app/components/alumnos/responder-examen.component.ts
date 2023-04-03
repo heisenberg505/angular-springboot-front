@@ -23,7 +23,7 @@ export class ResponderExamenComponent implements OnInit {
   alumno: Alumno;
   curso: Curso;
   examenes: Examen[] = [];
-  displayedExamenesColumns = ['id', 'nombre', 'asignaturas', 'preguntas', 'responder', 'ver'];
+  displayedExamenesColumns = ['id', 'nombre', 'asignaturas', 'preguntas', 'responder', 'ver','eliminar'];
 
   dataSource: MatTableDataSource<Examen>;
   //injectar el componente hijo del front, para customizarlo
@@ -47,6 +47,12 @@ export class ResponderExamenComponent implements OnInit {
           this.initPaginator();
         });
       });
+    });
+  }
+
+  private initExamenes(alumno: Alumno): void {
+    this.cursoService.obtenerCursoByAlumnoId(this.alumno).subscribe(curso => {      
+      this.examenes = (curso && curso.examenes) ? curso.examenes : [];
     });
   }
 
@@ -96,5 +102,31 @@ export class ResponderExamenComponent implements OnInit {
             console.log('Modal verExamen cerrado.');
           });
       });
+  }
+
+  public eliminarRespuestas(examen: Examen): void{
+    Swal.fire({
+      title: 'Cuidado:',
+      width: 400,
+      text: `¿Seguro que quieres eliminar las respuestas del examen ${examen.nombre}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.respuestaService.eliminarRespuestas(this.alumno, examen)
+        .subscribe(()=>{
+          //cambia el valor de este examen en el front
+          examen.respondido = false;
+          console.log(examen);
+          //no es necesario actualizar los examenes, las respuestas solo sirven en la vista de responder examen
+          //this.initExamenes(this.alumno);
+          
+          Swal.fire('Eliminado: ', `Respuestas del Examen ${examen.nombre} eliminadas correctamente.`, 'success');
+        });
+      }
+    });   
   }
 }

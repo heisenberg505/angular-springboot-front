@@ -25,4 +25,12 @@ export class RespuestaService {
   public obtenerRespuestasPorAlumnoPorExamen(alumno: Alumno, examen:Examen): Observable<Respuesta[]>{
     return this.http.get<Respuesta[]>(`${this.baseEndPoint}/alumno/${alumno.id}/examen/${examen.id}`);
   }
+
+  public eliminarRespuestas(alumno: Alumno, examen:Examen): Observable<Respuesta[]>{
+    return this.http.delete<Respuesta[]>(`${this.baseEndPoint}/alumno/${alumno.id}/examen/${examen.id}`);
+  }
+
+  public eliminarRespuestasByExamen(examen: Examen): Observable<void>{
+    return this.http.delete<void>(`${this.baseEndPoint}/examen/${examen.id}`);
+  }
 }

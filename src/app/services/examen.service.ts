@@ -24,4 +24,5 @@ export class ExamenService extends CommonService<Examen>{
   public filtrarPorNombre(nombre: string): Observable<Examen[]>{
     return this.http.get<Examen[]>(`${this.baseEndPoint}/filtrar/${nombre}`);
   }
+   
 }

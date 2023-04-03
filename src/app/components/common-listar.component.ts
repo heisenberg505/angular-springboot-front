@@ -32,7 +32,7 @@ implements OnInit {
     this.calcularPaginacion();
   }
 
-  private calcularPaginacion(){
+  public calcularPaginacion(){
     this.service.listarPaginas(this.paginaActual.toString(), this.totalPorPagina.toString())
     .subscribe(pageable =>{
       this.lista= pageable.content as E[];
